@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>r/IAmA Categories</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		.chart {
+			margin: auto;
+			width: 75%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1 align="center">Live Dashboard for r/IAmA</h1>
+    <hr />
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" onclick="window.location.href='nav.html'">Overview</a>
+        </li>
+        <li class="nav-item">
+		  <a class="nav-link active" onclick="window.location.href='csv-dataset.html'">Categories</a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="window.location.href='showpic.html'">Wordcloud</a>
+        </li>
+	  </ul>
+	  <form method="POST">
+		<form method="post">  
+			<label for="start_time">Start date</label>
+			<input type="text" name="start_time" id="start_time" placeholder="YYYY-MM-DD",pattern="\d{4}-\d{2}-\d{2}"><br>  
+			<label for="end_time">End date</label>
+			<input type="text" name="end_time" id="end_time" placeholder="YYYY-MM-DD",pattern="\d{4}-\d{2}-\d{2}"><br>  
+			<input type="submit" name="submit" value="See Time Result">  
+		</form>
+	  </form>
+	<div align="center">
+		<label for="last_start_time">Start Time: {{last_start_time}}</label>
+		<label for="last_end_time">End Time: {{last_end_time}}</label>
+	</div>
+	<div class="chart">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<script>
+        var color = Chart.helpers.color;
+        var cb = 'rgb(54, 162, 235)';
+        var kkk = '{{ ssslabel }}';
+        var ddd = '{{ sssdata }}';
+        kkk=kkk.replace("[","");
+        kkk=kkk.replace("]","");
+        kkk = kkk.replace(/&#39;/g, "");
+        ddd=ddd.replace("[","");
+        ddd=ddd.replace("]","");
+        var strs= new Array();
+        strs=kkk.split(",");
+        var strs1= new Array();
+        strs1=ddd.split(",");
+        var config = {
+          type: 'bar',
+          data: {
+            labels: strs,
+            datasets: [{
+              label: 'Times',
+              data: strs1,
+              yAxisID: 'precipitation',
+              backgroundColor: color(cb).alpha(0.5).rgbString(),
+              borderColor: 'transparent'
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'r/IAmA Categories'
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Categories'
+                }
+              }],
+              yAxes: [{
+                id: 'precipitation',
+                position: 'left',
+                gridLines: {
+                  drawOnChartArea: false
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Times'
+                }
+              }]
+            }
+          }
+        };
+    
+        window.onload = function() {
+          var ctx = document.getElementById('myChart').getContext('2d');
+          window.myChart = new Chart(ctx, config);
+		};
+		Chart.scaleService.updateScaleDefaults('linear', {
+			ticks: {
+				min: 0
+			}
+		});
+      </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
